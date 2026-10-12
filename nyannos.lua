@@ -1,4 +1,4 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/nyannos/Ui-Script/refs/heads/main/fps"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nika350cc-crypto/1/refs/heads/main/SiCut_DynamicIsland_AutoTimer_Persistent.lua"))()
 print("[nyann os] boot midnight...")
 do
   ply = game.Players
