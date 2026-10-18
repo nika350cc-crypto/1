@@ -88,15 +88,22 @@ end
 
 -- ================= AUTO HAKI =================
 task.spawn(function()
-        while true do
-                if getgenv().KA["Auto Haki"] then
-                        pcall(function()
-                                game:GetService("ReplicatedStorage"):WaitForChild("Remotes").CommF_:InvokeServer("Buso")
-                        end)
-                end
-                task.wait(2)
-        end
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local CommF = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("CommF_")
+
+    while true do
+        pcall(function()
+            local character = game.Players.LocalPlayer.Character
+
+            if character and not character:FindFirstChild("HasBuso") then
+                CommF:InvokeServer("Buso")
+            end
+        end)
+
+        task.wait(2)
+    end
 end)
+
 
 -- ================= MAIN LOOP — CHAY PHAT DANH LUON =================
 task.spawn(function()
