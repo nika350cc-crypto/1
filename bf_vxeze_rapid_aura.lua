@@ -52,6 +52,7 @@ end
 getgenv().RapidAuraConfig = {
     ["Auto Attack"] = true,  -- bat la danh luon (yeu cau cua Nam)
     ["Auto Equip"] = true,
+    ["Melee Only"] = false, -- khoa giu vu khi tay (Combat)
     ["Radius"] = 80,
 }
 local Config = getgenv().RapidAuraConfig
@@ -140,6 +141,19 @@ local function autoClick()
     if tool then pcall(function() tool:Activate() end) end
 end
 
+-- Nhan dien vu khi tay (melee) theo tu khoa — layer that, khong doan mo
+local meleeKeywords = { "combat", "electro", "dark step", "water kung fu",
+    "dragon breath", "dragon claw", "dragon talon", "electric claw",
+    "superhuman", "death step", "sharkman", "godhuman", "sanguine" }
+
+local function isMeleeTool(name)
+    local n = name:lower()
+    for _, kw in ipairs(meleeKeywords) do
+        if n:find(kw, 1, true) then return true end
+    end
+    return false
+end
+
 -- Auto equip vu khi tot nhat (khong can user lam gi)
 local function autoEquip()
     local c = getChar()
@@ -147,6 +161,22 @@ local function autoEquip()
     if not (c and hum) then return end
     if c:FindFirstChild("Haki") == nil then
         pcall(function() CommF_("Buso") end)
+    end
+    -- CHE DO CHI MELEE: chi giu tay combat, khong bao gio cam kiem/gun/fruit
+    if Config["Melee Only"] then
+        local held = c:FindFirstChildOfClass("Tool")
+        if held then
+            if isMeleeTool(held.Name) then return end
+            pcall(function() hum:UnequipTools() end)
+            tw(0.1)
+        end
+        for _, t in pairs(LP.Backpack:GetChildren()) do
+            if t:IsA("Tool") and t:FindFirstChild("Handle") and isMeleeTool(t.Name) then
+                hum:EquipTool(t)
+                return
+            end
+        end
+        return -- khong co melee tool = danh dang tay (Combat mac dinh)
     end
     if c:FindFirstChildOfClass("Tool") then return end
     for _, t in pairs(LP.Backpack:GetChildren()) do
@@ -343,8 +373,8 @@ local function cor(o, r)
 end
 
 local main = mk("Frame", {
-    Size = UDim2.new(0, 268, 0, 268),
-    Position = UDim2.new(0, 10, 0.5, -134),
+    Size = UDim2.new(0, 268, 0, 298),
+    Position = UDim2.new(0, 10, 0.5, -149),
     BackgroundColor3 = COL.BG, Active = true, Draggable = true,
 }, gui)
 cor(main, 12)
@@ -465,6 +495,7 @@ end
 
 addToggle("Auto Attack (bat la danh luon)", "Auto Attack")
 addToggle("Auto Equip (cam vu khi tu dong)", "Auto Equip")
+addToggle("Chi Melee (khoa giu tay combat)", "Melee Only")
 addSlider("Tam danh (studs)", "Radius", 30, 150, 5)
 
 local stopBtn = mk("TextButton", {
