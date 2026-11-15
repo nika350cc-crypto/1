@@ -40,12 +40,13 @@ local QuestData = {
         Level = 10, QuestName = "JungleQuest", QuestIndex = 1, MobName = "Monkey", KillCount = 8,
         NpcPos = CFrame.new(-1679.7632, 48.7400, 175.6400),
         MobPositions = {
+            CFrame.new(-1866.3134, 29.6221, 21.5889),
             CFrame.new(-1601.0857, 29.6221, 364.4406),
-            CFrame.new(-1866.3134, 29.6221, 21.588%),
             CFrame.new(-1758.7128, 29.6221, -31.8809),
             CFrame.new(-1637.5544, 29.6221, 19.6397),
             CFrame.new(-1450.6414, 29.6221, 306.1212),
             CFrame.new(-1299.4274, 17.5869, 81.4219),
+            CFrame.new(-1525.5554, 29.6221, 163.9581),
         }
     },
     [15] = {
